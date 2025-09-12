@@ -1,0 +1,106 @@
+# ----------------------------
+# QUESTION 1: Check if n is multiple of m
+# ----------------------------
+def is_multiple(n, m):
+    if m == 0:
+        raise ValueError("m must be non-zero")
+    return n % m == 0
+
+print("Q1:", is_multiple(10, 5))  # Output: True
+
+# ----------------------------
+# QUESTION 2: Check if number is even (without using %)
+# ----------------------------
+def is_even(k):
+    if k > 0:
+        k = -k
+    while k > 1:
+        k = k - 2
+    return k == 0
+
+print("Q2:", is_even(4))  # Output: True
+
+# ----------------------------
+# QUESTION 3: Find minimum and maximum in a list
+# ----------------------------
+def minmax(numbers):
+    smallest = largest = numbers[0]
+    for num in numbers:
+        if num < smallest:
+            smallest = num
+        if num > largest:
+            largest = num
+    return (smallest, largest)
+
+data = minmax([1, 2, 3, 4, 5])
+print("Q3:", data)  # Output: (1, 5)
+
+# ----------------------------
+# QUESTION 4: Sum of squares using loop
+# ----------------------------
+def sum_squares(n):
+    total = 0
+    for i in range(1, n):
+        total += i * i
+    return total
+
+result = sum_squares(5)
+print("Q4:", result)  # Output: 30
+
+# ----------------------------
+# QUESTION 5: Sum of squares using generator
+# ----------------------------
+def summ_squares(n):
+    return sum(i * i for i in range(1, n))
+
+result = summ_squares(6)
+print("Q5 (a):", result)  # Output: 55
+
+# ----------------------------
+# QUESTION 5 (b): Sum of odd squares using loop
+# ----------------------------
+def sum_odd(n):
+    total = 0
+    for i in range(1, n):
+        if i % 2 != 0:
+            total += i * i
+    return total
+
+number = sum_odd(10)
+print("Q5 (b):", number)  # Output: 165
+
+# ----------------------------
+# QUESTION 6: Sum of odd squares using generator
+# ----------------------------
+def sum_oddsquare(n):
+    return sum(i * i for i in range(1, n) if i % 2 != 0)
+
+numbers = sum_oddsquare(7)
+print("Q6:", numbers)  # Output: 84
+
+# ----------------------------
+# QUESTION 7: Print characters using negative and positive indices
+# ----------------------------
+print("Q7:")
+e = "abdullah-mateen"
+n = len(e)
+
+for i in range(-n, 0):
+    j = n + i
+    print(f"e[{i}] = {e[i]}, e[{j}] = {e[j]}")
+
+# ----------------------------
+# QUESTION 8: Print range from 50 to 80 with step 10
+# ----------------------------
+print("Q8:")
+a = range(50, 90, 10)
+for val in a:
+    print(val)
+
+# ----------------------------
+# QUESTION 9: Print range from 8 to -8 with step -2
+# ----------------------------
+print("Q9:")
+b = range(8, -10, -2)
+for value in b:
+    print(value)
