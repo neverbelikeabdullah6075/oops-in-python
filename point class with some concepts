@@ -1,0 +1,52 @@
+class Point:
+    count = 0
+
+    def __init__(self, x=3.0, y=4.0):
+        if isinstance(x, Point):
+            self._x = x._x
+            self._y = x._y
+            print("Copy constructor logic invoked")
+        else:
+            self._x = x
+            self._y = y
+        Point.count += 1
+
+    def __str__(self):
+        return f"Point(x={self._x}, y={self._y})"
+
+    @property
+    def x(self):
+        return self._x
+
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, value):
+        self._y = value
+        
+    def distance(self,other):
+        dx=self._x - other._x
+        dy=self._y - other._y
+        return (dx**2 + dy**2)**0.5
+        
+p1=Point(1,2)
+print(p1)
+p2=Point(p1)
+print(p2)
+p1=Point(3,7)
+p2=Point(10,8)
+
+print(p1.x)
+p1.x=20
+print(p1.x)
+default=Point()
+print(default)
+p1=Point(1,2)
+p2=Point(3,4)
+print(p1.distance(p2))
