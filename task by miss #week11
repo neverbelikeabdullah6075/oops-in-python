@@ -12,9 +12,9 @@ print("Q1:", is_multiple(10, 5))  # Output: True
 # QUESTION 2: Check if number is even (without using %)
 # ----------------------------
 def is_even(k):
-    if k > 0:
+    if k < 0:
         k = -k
-    while k > 1:
+    while k >= 2:
         k = k - 2
     return k == 0
 
