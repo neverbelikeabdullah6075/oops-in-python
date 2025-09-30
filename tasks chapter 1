@@ -1,0 +1,72 @@
+from abc import ABC, abstractmethod
+
+# ---------- Abstraction ----------
+class MoneyUnit(ABC):
+    def __init__(self, value: float, name: str):
+        self._value = value      # encapsulation
+        self._name = name
+
+    def get_value(self):
+        return self._value
+
+    def get_name(self):
+        return self._name
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+# ---------- Inheritance & Polymorphism ----------
+class Bill(MoneyUnit):
+    def __str__(self):
+        return f"Bill: {self._name} ({self._value})"
+
+
+class Coin(MoneyUnit):
+    def __str__(self):
+        return f"Coin: {self._name} ({self._value})"
+
+
+# ---------- Composition ----------
+class ChangeMaker:
+    def __init__(self):
+        self.units = [
+            Bill(1000, "1000 Rupee Note"),
+            Bill(500, "500 Rupee Note"),
+            Bill(100, "100 Rupee Note"),
+            Bill(50, "50 Rupee Note"),
+            Coin(20, "20 Rupee Coin"),
+            Coin(10, "10 Rupee Coin"),
+            Coin(5, "5 Rupee Coin"),
+            Coin(1, "1 Rupee Coin")
+        ]
+
+    def make_change(self, charged, given):
+        if given < charged:
+            return "Not enough money given!"
+
+        change = given - charged
+        result = []
+        for unit in self.units:
+            count = change // unit.get_value()
+            if count > 0:
+                result.append((unit.get_name(), int(count)))
+                change %= unit.get_value()
+        return result
+
+
+# ---------- Execution ----------
+if __name__ == "__main__":
+    charged = int(input("Enter amount charged: "))
+    given = int(input("Enter amount given: "))
+
+    cm = ChangeMaker()
+    change = cm.make_change(charged, given)
+
+    print("\nChange to return:")
+    if isinstance(change, str):
+        print(change)
+    else:
+        for name, count in change:
+            print(f"{count} x {name}")
