@@ -1,0 +1,39 @@
+            
+from abc import ABC, abstractmethod
+
+# ---------- Abstraction ----------
+class Operation(ABC):
+    @abstractmethod
+    def execute(self, value):
+        pass
+
+
+# ---------- Concrete Class ----------
+class DivideByTwo(Operation):
+    def execute(self, value):
+        count = 0
+        while value >= 2:
+            value = value / 2
+            count += 1
+        return count
+
+
+# ---------- High-Level Class (uses aggregation) ----------
+class Calculator:
+    def __init__(self, operation: Operation):  # FIXED: __init__ not _init_
+        self.operation = operation
+
+    def calculate(self, value):
+        return self.operation.execute(value)  # FIXED: missing return logic
+
+
+# ---------- Execution ----------
+if __name__ == "__main__":  # FIXED: _name_ → __name__, "_main_" → "__main__"
+    num = int(input("Enter a number greater than 2: "))
+    if num <= 2:
+        print("Number must be greater than 2!")
+    else:
+        divide_operation = DivideByTwo()
+        calc = Calculator(divide_operation)
+        result = calc.calculate(num)
+        print(f"Number of divisions by 2 before value < 2: {result}")
