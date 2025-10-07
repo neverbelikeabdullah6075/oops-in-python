@@ -1,0 +1,129 @@
+class Course:
+    def __init__(self, name, code):
+        self.name = name
+        self.code = code
+
+    def __str__(self):
+        return f"Course Details:\n  Name: {self.name}\n  Code: {self.code}"
+
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Student(Person):
+    def __init__(self, name, roll_no, course):
+        super().__init__(name)
+        self.roll_no = roll_no
+        self.course = course
+
+    def __str__(self):
+        return (
+            f"Student Details:\n"
+            f"  Name: {self.name}\n"
+            f"  Roll No: {self.roll_no}\n"
+            f"  {self.course}"
+        )
+
+class Studentlist:
+    def __init__(self):
+        self.students = []     # Correct attribute name
+        self.count = 0
+
+    def __len__(self):
+        return self.count
+
+    def add_student(self, student):
+        # Create a new list with one extra space
+        new_array = [None] * (self.count + 1)
+
+        # Copy old students into new list
+        for i in range(self.count):
+            new_array[i] = self.students[i]
+
+        # Add the new student at the end
+        new_array[self.count] = student
+
+        
+        self.students = new_array
+
+        # Update the count
+        self.count += 1
+
+        
+        print(f"{student.name} enrolled in {student.course.name}")
+
+    def remove_student(self, name):
+        new_array = []
+        found = False
+        for s in self.students:
+            if s.name != name:
+                new_array.append(s)
+            else:
+                found = True
+        self.students = new_array
+        self.count = len(new_array)
+        if found:
+            print(f"❌ {name} dropped from the LMS.")
+        else:
+            print(f"⚠️ {name} not found!")
+
+    def find_student(self, name):
+        for s in self.students:
+            if s.name == name:
+                return s
+        return None
+    def show_all(self):
+        print("\n📘 Current Students:")
+        if self.count == 0:
+            print("No students currently enrolled.")
+        else:
+            for s in self.students:
+                print(" -", s)
+        print("-" * 40)
+        
+        
+if __name__ == "__main__":
+
+    # 📘 Step 1: Create Courses
+    dsa = Course("Data Structures & Algorithms", "CS201")
+    python = Course("Python Programming", "CS102")
+
+    # 👨‍🎓 Step 2: Create Students
+    student1 = Student("Ayesha", 101, dsa)
+    student2 = Student("Bilal", 102, python)
+    student3 = Student("Zara", 103, dsa)
+
+    # 📋 Step 3: Create the Student List for the Department
+    dcs_students = Studentlist()
+
+    # ➕ Step 4: Add students to the DCS
+    dcs_students.add_student(student1)
+    dcs_students.add_student(student2)
+    dcs_students.add_student(student3)
+
+    # 👀 Step 5: Show all enrolled students
+    dcs_students.show_all()
+
+    # ❌ Step 6: Remove a student
+    dcs_students.remove_student("Bilal")
+
+    # 👀 Step 7: Show updated student list
+    dcs_students.show_all()
+
+    # 🔍 Step 8: Try finding a student
+    search_name = "Zara"
+    result = dcs_students.find_student(search_name)
+    if result:
+        print(f"\n🔍 Student '{search_name}' found:\n{result}")
+    else:
+        print(f"\n⚠️ Student '{search_name}' not found!")
+
+    # 🔍 Try finding someone who doesn’t exist
+    result = dcs_students.find_student("Hamza")
+    if result:
+        print(f"\n🔍 Student 'Hamza' found:\n{result}")
+    else:
+        print(f"\n⚠️ Student 'Hamza' not found!")
+
+
+
