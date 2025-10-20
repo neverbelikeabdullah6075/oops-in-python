@@ -1,0 +1,28 @@
+lass Studentlist:
+    def __init__(self, other=None):
+        if other is None:
+            # Normal constructor
+            self.size = 0
+            self.capacity = 5
+            self.students = [None] * self.capacity
+            print("runs normal constructor")
+        else:
+            # Copy constructor with shared reference
+            self.size = other.size
+            self.capacity = other.capacity
+            self.students = other.students  # Shared reference!
+            print("runs copy constructor")
+
+# Create original object
+dcs = Studentlist()
+
+# Create a copy that shares the same students list
+dcs_copy = Studentlist(dcs)
+
+# Let's test shared reference behavior
+dcs.students[0] = "Abdullah"
+print("Original:", dcs.students)
+print("Copy:", dcs_copy.students)
+dcs_copy.students[3]="ahmed"
+print(dcs.students)
+print(dcs_copy.students)
