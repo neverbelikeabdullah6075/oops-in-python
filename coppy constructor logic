@@ -1,4 +1,4 @@
-lass Studentlist:
+class Studentlist:
     def __init__(self, other=None):
         if other is None:
             # Normal constructor
@@ -26,3 +26,6 @@ print("Copy:", dcs_copy.students)
 dcs_copy.students[3]="ahmed"
 print(dcs.students)
 print(dcs_copy.students)
+dcs.size=20
+print(dcs.size)
+print(dcs_copy.size)
