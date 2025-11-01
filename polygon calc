@@ -1,0 +1,488 @@
+"""
+Polygon Calculator - A comprehensive polygon geometry calculator
+Supports various polygon types and calculates perimeter, area, and similarity.
+Author: Your Name
+Date: 2024
+"""
+
+import math
+from abc import ABC, abstractmethod
+
+
+class Polygon(ABC):
+    """Abstract base class for all polygon types."""
+    
+    def __init__(self, num_sides):
+        """
+        Initialize a polygon with a given number of sides.
+        
+        Args:
+            num_sides (int): Number of sides in the polygon
+        """
+        if num_sides < 3:
+            raise ValueError("A polygon must have at least 3 sides")
+        self.num_sides = num_sides
+
+    @abstractmethod
+    def area(self):
+        """Calculate and return the area of the polygon."""
+        pass
+
+    @abstractmethod
+    def perimeter(self):
+        """Calculate and return the perimeter of the polygon."""
+        pass
+    
+    def __str__(self):
+        """Return a formatted string representation of the polygon."""
+        return (f"{self.__class__.__name__} with {self.num_sides} sides — "
+                f"Perimeter: {self.perimeter():.2f}, Area: {self.area():.2f}")
+
+
+class Triangle(Polygon):
+    """Triangle class with three sides."""
+    
+    def __init__(self, a, b, c):
+        """
+        Initialize a triangle with three side lengths.
+        
+        Args:
+            a, b, c (float): Side lengths of the triangle
+        
+        Raises:
+            ValueError: If sides don't form a valid triangle
+        """
+        if a <= 0 or b <= 0 or c <= 0:
+            raise ValueError("All sides must be positive")
+        if a + b <= c or b + c <= a or a + c <= b:
+            raise ValueError("Sides don't form a valid triangle (triangle inequality violated)")
+        
+        super().__init__(3)
+        self.a = a
+        self.b = b
+        self.c = c
+        
+    def perimeter(self):
+        """Calculate perimeter by summing all sides."""
+        return self.a + self.b + self.c
+    
+    def area(self):
+        """Calculate area using Heron's formula."""
+        s = self.perimeter() / 2
+        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+
+
+class Isosceles(Triangle):
+    """Isosceles triangle with two equal sides."""
+    
+    def __init__(self, equal_side, base):
+        """
+        Initialize an isosceles triangle.
+        
+        Args:
+            equal_side (float): Length of the two equal sides
+            base (float): Length of the base
+        """
+        super().__init__(equal_side, equal_side, base)
+
+
+class Equilateral(Triangle):
+    """Equilateral triangle with all sides equal."""
+    
+    def __init__(self, side):
+        """
+        Initialize an equilateral triangle.
+        
+        Args:
+            side (float): Length of all sides
+        """
+        super().__init__(side, side, side)
+
+
+class Quadrilateral(Polygon):
+    """General quadrilateral with four sides."""
+    
+    def __init__(self, a, b, c, d):
+        """
+        Initialize a quadrilateral with four side lengths.
+        
+        Args:
+            a, b, c, d (float): Side lengths
+        """
+        if any(side <= 0 for side in [a, b, c, d]):
+            raise ValueError("All sides must be positive")
+        
+        super().__init__(4)
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        
+    def perimeter(self):
+        """Calculate perimeter by summing all sides."""
+        return self.a + self.b + self.c + self.d
+    
+    def area(self):
+        """
+        Generic quadrilateral area calculation is complex.
+        Should be overridden in specific subclasses.
+        """
+        return 0.0
+
+
+class Rectangle(Quadrilateral):
+    """Rectangle with opposite sides equal."""
+    
+    def __init__(self, length, width):
+        """
+        Initialize a rectangle.
+        
+        Args:
+            length (float): Length of the rectangle
+            width (float): Width of the rectangle
+        """
+        if length <= 0 or width <= 0:
+            raise ValueError("Length and width must be positive")
+        
+        super().__init__(length, width, length, width)
+        self.length = length
+        self.width = width
+    
+    def perimeter(self):
+        """Calculate perimeter: 2 * (length + width)."""
+        return 2 * (self.length + self.width)
+    
+    def area(self):
+        """Calculate area: length * width."""
+        return self.length * self.width
+
+
+class Square(Rectangle):
+    """Square with all sides equal."""
+    
+    def __init__(self, side):
+        """
+        Initialize a square.
+        
+        Args:
+            side (float): Length of all sides
+        """
+        super().__init__(side, side)
+
+
+class Pentagon(Polygon):
+    """Regular pentagon with five equal sides."""
+    
+    def __init__(self, side):
+        """
+        Initialize a regular pentagon.
+        
+        Args:
+            side (float): Length of each side
+        """
+        if side <= 0:
+            raise ValueError("Side length must be positive")
+        
+        super().__init__(5)
+        self.side = side
+
+    def perimeter(self):
+        """Calculate perimeter: 5 * side."""
+        return 5 * self.side
+
+    def area(self):
+        """Calculate area using regular pentagon formula."""
+        return (1/4) * math.sqrt(5 * (5 + 2 * math.sqrt(5))) * self.side**2
+
+
+class Hexagon(Polygon):
+    """Regular hexagon with six equal sides."""
+    
+    def __init__(self, side):
+        """
+        Initialize a regular hexagon.
+        
+        Args:
+            side (float): Length of each side
+        """
+        if side <= 0:
+            raise ValueError("Side length must be positive")
+        
+        super().__init__(6)
+        self.side = side
+
+    def perimeter(self):
+        """Calculate perimeter: 6 * side."""
+        return 6 * self.side
+
+    def area(self):
+        """Calculate area using regular hexagon formula."""
+        return (3 * math.sqrt(3) / 2) * self.side**2
+
+
+class Octagon(Polygon):
+    """Regular octagon with eight equal sides."""
+    
+    def __init__(self, side):
+        """
+        Initialize a regular octagon.
+        
+        Args:
+            side (float): Length of each side
+        """
+        if side <= 0:
+            raise ValueError("Side length must be positive")
+        
+        super().__init__(8)
+        self.side = side
+
+    def perimeter(self):
+        """Calculate perimeter: 8 * side."""
+        return 8 * self.side
+
+    def area(self):
+        """Calculate area using regular octagon formula."""
+        return 2 * (1 + math.sqrt(2)) * self.side**2
+
+
+class PolygonByCoordinates(Polygon):
+    """Polygon defined by vertex coordinates."""
+    
+    def __init__(self, vertices):
+        """
+        Initialize a polygon from coordinate vertices.
+        
+        Args:
+            vertices (list): List of (x, y) tuples representing vertices
+        
+        Raises:
+            ValueError: If fewer than 3 vertices provided
+        """
+        if len(vertices) < 3:
+            raise ValueError("A polygon must have at least 3 vertices")
+        
+        super().__init__(len(vertices))
+        self.vertices = vertices
+
+    def perimeter(self):
+        """
+        Calculate perimeter by summing distances between consecutive vertices.
+        Uses Euclidean distance formula.
+        """
+        peri = 0
+        n = len(self.vertices)
+        for i in range(n):
+            x1, y1 = self.vertices[i]
+            x2, y2 = self.vertices[(i + 1) % n]
+            peri += math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        return peri
+
+    def area(self):
+        """
+        Calculate area using the Shoelace formula (also called surveyor's formula).
+        Works for any simple polygon.
+        """
+        area = 0
+        n = len(self.vertices)
+        for i in range(n):
+            x1, y1 = self.vertices[i]
+            x2, y2 = self.vertices[(i + 1) % n]
+            area += (x1 * y2 - x2 * y1)
+        return abs(area) / 2
+
+    def is_similar(self, other):
+        """
+        Check if two polygons are similar (same shape, different size).
+        
+        Args:
+            other (PolygonByCoordinates): Another polygon to compare with
+        
+        Returns:
+            bool: True if polygons are similar, False otherwise
+        """
+        if self.num_sides != other.num_sides:
+            return False
+        
+        # Calculate all side lengths for both polygons
+        sides_self = [
+            math.dist(self.vertices[i], self.vertices[(i+1) % self.num_sides]) 
+            for i in range(self.num_sides)
+        ]
+        sides_other = [
+            math.dist(other.vertices[i], other.vertices[(i+1) % other.num_sides]) 
+            for i in range(other.num_sides)
+        ]
+        
+        # Check if all corresponding sides have the same ratio
+        ratio = sides_self[0] / sides_other[0]
+        return all(
+            math.isclose(sides_self[i] / sides_other[i], ratio, rel_tol=1e-6) 
+            for i in range(1, self.num_sides)
+        )
+
+
+def get_positive_float(prompt):
+    """
+    Helper function to get a positive float input from user.
+    
+    Args:
+        prompt (str): The prompt message to display
+    
+    Returns:
+        float: A positive float value
+    """
+    while True:
+        try:
+            value = float(input(prompt))
+            if value <= 0:
+                print("Error: Value must be positive. Try again.")
+                continue
+            return value
+        except ValueError:
+            print("Error: Please enter a valid number.")
+
+
+def get_positive_int(prompt):
+    """
+    Helper function to get a positive integer input from user.
+    
+    Args:
+        prompt (str): The prompt message to display
+    
+    Returns:
+        int: A positive integer value
+    """
+    while True:
+        try:
+            value = int(input(prompt))
+            if value <= 0:
+                print("Error: Value must be positive. Try again.")
+                continue
+            return value
+        except ValueError:
+            print("Error: Please enter a valid integer.")
+
+
+def main():
+    """Main function to run the polygon calculator."""
+    print("=" * 50)
+    print("POLYGON CALCULATOR".center(50))
+    print("=" * 50)
+    print("\nChoose a polygon type:")
+    print("1. Triangle")
+    print("2. Isosceles Triangle")
+    print("3. Equilateral Triangle")
+    print("4. Rectangle")
+    print("5. Square")
+    print("6. Pentagon")
+    print("7. Hexagon")
+    print("8. Octagon")
+    print("9. Polygon by Coordinates")
+    print("-" * 50)
+    
+    try:
+        choice = int(input("Enter your choice (1-9): "))
+        
+        polygon = None
+        
+        if choice == 1:
+            print("\n--- Triangle ---")
+            a = get_positive_float("Enter side a: ")
+            b = get_positive_float("Enter side b: ")
+            c = get_positive_float("Enter side c: ")
+            polygon = Triangle(a, b, c)
+            
+        elif choice == 2:
+            print("\n--- Isosceles Triangle ---")
+            equal_side = get_positive_float("Enter equal side length: ")
+            base = get_positive_float("Enter base length: ")
+            polygon = Isosceles(equal_side, base)
+            
+        elif choice == 3:
+            print("\n--- Equilateral Triangle ---")
+            side = get_positive_float("Enter side length: ")
+            polygon = Equilateral(side)
+            
+        elif choice == 4:
+            print("\n--- Rectangle ---")
+            length = get_positive_float("Enter length: ")
+            width = get_positive_float("Enter width: ")
+            polygon = Rectangle(length, width)
+            
+        elif choice == 5:
+            print("\n--- Square ---")
+            side = get_positive_float("Enter side length: ")
+            polygon = Square(side)
+            
+        elif choice == 6:
+            print("\n--- Pentagon ---")
+            side = get_positive_float("Enter side length: ")
+            polygon = Pentagon(side)
+            
+        elif choice == 7:
+            print("\n--- Hexagon ---")
+            side = get_positive_float("Enter side length: ")
+            polygon = Hexagon(side)
+            
+        elif choice == 8:
+            print("\n--- Octagon ---")
+            side = get_positive_float("Enter side length: ")
+            polygon = Octagon(side)
+
+        elif choice == 9:
+            print("\n--- Polygon by Coordinates ---")
+            n = get_positive_int("Enter number of vertices (minimum 3): ")
+            if n < 3:
+                print("Error: A polygon must have at least 3 vertices.")
+                return
+            
+            vertices = []
+            print(f"\nEnter {n} vertices:")
+            for i in range(n):
+                print(f"Vertex {i+1}:")
+                x = float(input("  x-coordinate: "))
+                y = float(input("  y-coordinate: "))
+                vertices.append((x, y))
+            
+            polygon = PolygonByCoordinates(vertices)
+
+            # Ask user if they want to test similarity
+            print("\n" + "-" * 50)
+            test_sim = input("Test similarity with another polygon? (y/n): ").lower()
+            if test_sim == 'y':
+                vertices2 = []
+                print(f"\nEnter coordinates for the second polygon ({n} vertices):")
+                for i in range(n):
+                    print(f"Vertex {i+1}:")
+                    x = float(input("  x-coordinate: "))
+                    y = float(input("  y-coordinate: "))
+                    vertices2.append((x, y))
+                
+                polygon2 = PolygonByCoordinates(vertices2)
+                
+                print("\n" + "=" * 50)
+                if polygon.is_similar(polygon2):
+                    print("✓ The two polygons are SIMILAR!")
+                else:
+                    print("✗ The two polygons are NOT similar.")
+                print("=" * 50)
+        
+        else:
+            print("\n✗ Invalid choice! Please choose a number between 1 and 9.")
+            return
+        
+        # Display results
+        print("\n" + "=" * 50)
+        print("RESULTS".center(50))
+        print("=" * 50)
+        print(polygon)
+        print("=" * 50)
+        
+    except ValueError as e:
+        print(f"\n✗ Error: {e}")
+    except Exception as e:
+        print(f"\n✗ An unexpected error occurred: {e}")
+
+
+if __name__ == "__main__":
+    main()
