@@ -1,0 +1,48 @@
+"""
+Demonstration of Multiple and Multilevel Inheritance in Python
+- Multilevel: Animal -> Prey -> Rabbit
+- Multilevel: Animal -> Predator -> Hawk  
+- Multiple: Fish inherits from both Prey and Predator
+"""
+
+class Animal:
+    """Base class for all animals"""
+    def eat(self):
+        print("this animal is eating")
+        
+    def sleep(self):
+        print("this animal is sleeping")
+
+class Prey(Animal):
+    """Animals that can be hunted"""
+    def flee(self):
+        print("this animal is fleeing")
+
+class Predator(Animal):
+    """Animals that hunt other animals"""
+    def hunt(self):
+        print("this animal is hunting")
+
+class Rabbit(Prey):
+    """Rabbit - inherits from Prey (multilevel inheritance)"""
+    pass
+
+class Hawk(Predator):
+    """Hawk - inherits from Predator (multilevel inheritance)"""
+    pass
+
+class Fish(Prey, Predator):
+    """Fish - can both hunt and flee (multiple inheritance)"""
+    pass
+
+if __name__ == "__main__":
+    # Demonstrate multilevel inheritance
+    rabbit = Rabbit()
+    hawk = Hawk()
+    
+    # Demonstrate multiple inheritance
+    fish = Fish()
+    fish.hunt()
+    fish.flee()
+    fish.sleep()
+    fish.eat()
